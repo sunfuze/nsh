@@ -1,6 +1,6 @@
 //! `nsh/base`: the behavior and infrastructure foundation of NSH apps' UI,
 //! written in Rust, with no look of its own (as `gpui-base` is GPUI Kit's):
-//! controls (`Button`, `Checkbox`, a color picker: `ColorPicker` and its parts, `NumberInput`, `Radio` in a
+//! controls (`Button`, a link (`Link`), `Checkbox`, a color picker: `ColorPicker` and its parts, `NumberInput`, `Radio` in a
 //! `RadioGroup`, `Slider`, `Switch`, a scroll bar of the app's own look (`Scrollbar`), `Tab` in `Tabs`, `Select`, `Combobox`, a one-time code: `OtpInput`), a progress bar (`Progress`), disclosure (`Collapsible`),
 //! the parts of charts (`plot`: `nsh/base/plot`), navigation (stacks and pages), dialogs, popups on the core's overlays
 //! (`Popover`, `Menu`, `ContextMenu`, `Tooltip`, `Sheet`), a code editor
@@ -29,6 +29,7 @@ mod diff;
 pub mod dock;
 pub mod editor;
 mod keys;
+mod link;
 mod listbox;
 mod menu;
 mod navigation;
@@ -113,6 +114,7 @@ pub use crate::{
         EditorSearch, EditorSearchResult, EditorSelection, EditorStyles, EditorTextPressEvent,
         EditorToken, editor,
     },
+    link::{Link, LinkElement, LinkEvent, LinkOpenWith, LinkProps, link},
     menu::{
         ContextMenu, ContextMenuElement, ContextMenuProps, Menu, MenuElement, MenuEvent, MenuItem,
         MenuItemElement, MenuItemEvent, MenuItemProps, MenuProps, MenuSeparator,
@@ -218,7 +220,7 @@ pub mod parts {
     use crate::{
         AlertDialog, Button, Calendar, Checkbox, Collapsible, ColorArea, ColorEyeDropper,
         ColorField, ColorPicker, ColorSlider, ColorSwatch, Combobox, ContextMenu, DataTable,
-        DatePicker, DiffView, DockArea, Editor, Menu, MenuItem, MenuSeparator, NumberInput,
+        DatePicker, DiffView, DockArea, Editor, Link, Menu, MenuItem, MenuSeparator, NumberInput,
         OtpInput, Popover, Progress, Radio, RadioGroup, ResizablePanel, ResizablePanelGroup,
         Scrollbar, Select, Sheet, Slider, Submenu, Switch, Tab, Table, TableBody, TableCaption,
         TableCell, TableFooter, TableHead, TableHeader, TableRow, Tabs, TextView, TimeField, Toast,
@@ -243,11 +245,12 @@ pub mod parts {
     ];
 
     /// The controls, popups, toasts and dialogs every app may use: buttons,
-    /// checkboxes, color pickers, radios, switches, sliders, scroll bars, number inputs, one-time code inputs, selects, comboboxes, tabs, collapsibles, progress,
+    /// links, checkboxes, color pickers, radios, switches, sliders, scroll bars, number inputs, one-time code inputs, selects, comboboxes, tabs, collapsibles, progress,
     /// menus, popovers, sheets, tooltips, toasts and system alerts.
     pub fn core(registry: &mut Registry) {
         registry
             .register::<Button>()
+            .register::<Link>()
             .register::<ContextMenu>()
             .register::<Menu>()
             .register::<MenuItem>()
@@ -379,6 +382,7 @@ mod tests {
                 "DiffView",
                 "DockArea",
                 "Editor",
+                "Link",
                 "Menu",
                 "MenuItem",
                 "MenuSeparator",
