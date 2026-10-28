@@ -108,6 +108,7 @@ and take their look from the app.
 | `<Checkbox>` | `nsh_base::checkbox()` | A checked, unchecked or indeterminate control with an indicator | [Checkbox](./checkbox.md) |
 | `<Radio>`, `<RadioGroup>` | `nsh_base::radio()`, `radio_group()` | One option of a set the user picks one of, and the set | [Radio](./radio.md) |
 | `<Tab>`, `<Tabs>` | `nsh_base::tab()`, `tabs()` | One tab of a tab list, and the list | [Tabs](./tabs.md) |
+| `<Toggle>`, `<ToggleGroup>` | `nsh_base::toggle()`, `toggle_group()` | A button that is on or off, and a toolbar of them | [Toggle](./toggle.md) |
 | `<Switch>` | `nsh_base::switch()` | An on / off control with a track and a thumb | [Switch](./switch.md) |
 | `<Select>` | `nsh_base::select()` | One value chosen from a list of items, with the keyboard, search and sections | [Select](./select.md) |
 | `<Collapsible>` | `nsh_base::collapsible()` | A region whose content expands and collapses | [Collapsible](./collapsible.md) |

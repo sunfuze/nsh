@@ -25,3 +25,4 @@ mod slider;
 mod tabs;
 mod text_view;
 mod time_field;
+mod toggle;

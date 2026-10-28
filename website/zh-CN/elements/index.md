@@ -94,6 +94,7 @@ TSX 从 `nsh/base` 导入，Rust 从 `nsh_base` crate 导入。它们负责行�
 | `<Checkbox>` | `nsh_base::checkbox()` | 带指示器的勾选 / 未勾选 / 半选控件 | [Checkbox](./checkbox.md) |
 | `<Radio>`、`<RadioGroup>` | `nsh_base::radio()`、`radio_group()` | 一组只能选一个的选项中的一项，以及这一组 | [Radio](./radio.md) |
 | `<Tab>`、`<Tabs>` | `nsh_base::tab()`、`tabs()` | 标签列表中的一个标签页，以及这个列表 | [Tabs](./tabs.md) |
+| `<Toggle>`、`<ToggleGroup>` | `nsh_base::toggle()`、`toggle_group()` | 一个处于开或关的按钮，以及由它们组成的工具栏 | [Toggle](./toggle.md) |
 | `<Switch>` | `nsh_base::switch()` | 带轨道和滑块的开 / 关控件 | [Switch](./switch.md) |
 | `<Select>` | `nsh_base::select()` | 从一组条目中选出一个值，支持键盘、搜索和分组 | [Select](./select.md) |
 | `<Collapsible>` | `nsh_base::collapsible()` | 内容可展开和收起的区域 | [Collapsible](./collapsible.md) |

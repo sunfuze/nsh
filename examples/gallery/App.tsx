@@ -41,6 +41,7 @@ const groups: { title: string; demos: DemoEntry[] }[] = [
       { name: "Radio", detail: "A plan picker: one of a small set, a disabled plan", icon: "radio", screen: lazy(() => import("./demos/Controls").then((m) => m.RadioDemo)) },
       { name: "Switch", detail: "Settings that take effect at once, one that needs another on", icon: "switch", screen: lazy(() => import("./demos/Controls").then((m) => m.SwitchDemo)) },
       { name: "Tabs", detail: "A section switcher, a disabled tab", icon: "tabs", screen: lazy(() => import("./demos/Controls").then((m) => m.TabsDemo)) },
+      { name: "Toggle", detail: "A text toolbar, a segmented view switcher, a favorite star, sizes, a locked group", icon: "controls", screen: lazy(() => import("./demos/ToggleDemo").then((m) => m.ToggleDemo)) },
       { name: "Select", detail: "A sort order, fonts in sections with search, a disabled language", icon: "select", screen: lazy(() => import("./demos/Controls").then((m) => m.SelectDemo)) },
       { name: "Combobox", detail: "Topics picked several at once with search, a reviewer picked alone", icon: "select", screen: lazy(() => import("./demos/Controls").then((m) => m.ComboboxDemo)) },
       { name: "DatePicker", detail: "A due date on weekdays, a trip's range with presets, a meeting's day and time", icon: "select", screen: lazy(() => import("./demos/Controls").then((m) => m.DatePickerDemo)) },
