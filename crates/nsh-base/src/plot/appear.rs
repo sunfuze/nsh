@@ -7,7 +7,11 @@
 //! into its window. A scope around the list remembers which appears have
 //! finished, for as long as the scope lives.
 
-use std::{cell::RefCell, collections::HashSet, rc::Rc};
+use std::{
+    cell::RefCell,
+    collections::{HashMap, HashSet},
+    rc::Rc,
+};
 
 use nsh_core::{
     element::{JsHost, JsIn, JsKind, JsOwned, JsValue, PropError, TsTypes},
@@ -121,6 +125,11 @@ pub struct PlotAppearScopeProps {
 struct AppearScope {
     /// The keys of the appears that finished.
     finished: Rc<RefCell<HashSet<Seen>>>,
+    /// The generation each pending one takes the place of: a plot moved
+    /// to it from one it showed whole. When it finishes, in whichever plot
+    /// made again meanwhile, the one it replaces is forgotten, as
+    /// `gpui-base` overwrites the one generation it keeps per plot.
+    replaces: Rc<RefCell<HashMap<Seen, Seen>>>,
     /// Moved on when the scope forgets: its plots draw in afresh.
     epoch: Signal<u64>,
 }
@@ -147,6 +156,7 @@ struct AppearScope {
 pub fn PlotAppearScope(props: PlotAppearScopeProps, _cx: Scope<NoEvent>) -> impl IntoElement {
     let scope = AppearScope {
         finished: Rc::default(),
+        replaces: Rc::default(),
         epoch: signal(0),
     };
     provide_context(scope.clone());
@@ -159,6 +169,7 @@ pub fn PlotAppearScope(props: PlotAppearScopeProps, _cx: Scope<NoEvent>) -> impl
         }
         named.replace(now);
         scope.finished.borrow_mut().clear();
+        scope.replaces.borrow_mut().clear();
         scope.epoch.update(|epoch| *epoch += 1);
     });
     view().child(props.children)
@@ -189,7 +200,19 @@ impl AppearMemory {
             return false;
         };
         scope.epoch.get();
-        scope.finished.borrow().contains(&generation.seen())
+        let seen = generation.seen();
+        let finished = scope.finished.borrow().contains(&seen);
+        let held = self.held.with(|held| held.clone());
+        if finished {
+            // Shown whole: the generation this plot holds, so the next
+            // one it finishes replaces it.
+            self.held.replace(Some(seen));
+        } else if let Some(last) = held
+            && last != seen
+        {
+            scope.replaces.borrow_mut().insert(seen, last);
+        }
+        finished
     }
 
     /// The appear of `generation` has finished: the scope remembers it in
@@ -199,10 +222,12 @@ impl AppearMemory {
         let Some(scope) = &self.scope else { return };
         let seen = generation.seen();
         let mut finished = scope.finished.borrow_mut();
-        if let Some(last) = self.held.replace(Some(seen.clone()))
-            && last != seen
-        {
-            finished.remove(&last);
+        let replaced = scope.replaces.borrow_mut().remove(&seen);
+        let last = self.held.replace(Some(seen.clone()));
+        for old in [replaced, last].into_iter().flatten() {
+            if old != seen {
+                finished.remove(&old);
+            }
         }
         finished.insert(seen);
     }

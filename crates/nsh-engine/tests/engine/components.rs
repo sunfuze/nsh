@@ -6571,8 +6571,9 @@ fn base_plot_appear_scope_remembers_the_appears_that_finished() {
     let started = |batches: &[MountBatch], ms: f32| {
         batches
             .iter()
-            .flat_map(|b| b.items.iter())
-            .filter_map(|i| match i {
+            .rev()
+            .flat_map(|b| b.items.iter().rev())
+            .find_map(|i| match i {
                 MountItem::Animation(AnimationOp::Start {
                     animation,
                     driver:
@@ -6583,7 +6584,6 @@ fn base_plot_appear_scope_remembers_the_appears_that_finished() {
                 }) if *to == 1.0 && *duration_ms == ms => Some(*animation),
                 _ => None,
             })
-            .last()
     };
     let clipped = |batches: &[MountBatch]| {
         plot_drawings(batches)
