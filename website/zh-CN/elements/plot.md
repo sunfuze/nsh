@@ -1,7 +1,6 @@
 ---
 title: Plot
 description: "nsh/base/plot 的 Plot 组件、它的图形 Line、Area、Bar、Grid、Pie 和 Arc 以及 PlotAxis：根据应用的数据行原生绘制图表，负责坐标轴的比例尺和标签、指针下的数据行或扇区和动效，没有自己的外观。"
-order: 20.9
 group: base
 demo: el-plot
 ---
