@@ -88,6 +88,7 @@ TSX 从 `nsh/base` 导入，Rust 从 `nsh_base` crate 导入。它们负责行�
 
 | 组件 | Rust | 作用 | 页面 |
 |---|---|---|---|
+| `<Accordion>` 及其部件 | `nsh_base::accordion()`、`accordion_item()` 等 | 在各自标题下展开和收起的一组分区，一次一个或同时多个 | [Accordion](./accordion.md) |
 | `<Button>` | `nsh_base::button()` | 带有状态和角色的可按压控件 | [Button](./button.md) |
 | `<Input>` | `nsh_base::input()` | 原生文本输入框（UITextField 或 UITextView / EditText） | [Input](./input.md) |
 | `<OtpInput>` | `nsh_base::otp_input()` | 固定位数的一次性验证码，输入、粘贴或自动填充到格子里 | [OtpInput](./otp-input.md) |

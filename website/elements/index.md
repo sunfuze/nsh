@@ -102,6 +102,7 @@ and take their look from the app.
 
 | Component | Rust | What it does | Page |
 |---|---|---|---|
+| `<Accordion>` and its parts | `nsh_base::accordion()`, `accordion_item()`, ... | Stacked sections that expand and collapse under their headings, one at a time or several | [Accordion](./accordion.md) |
 | `<Button>` | `nsh_base::button()` | A pressable control with its states and its role | [Button](./button.md) |
 | `<Input>` | `nsh_base::input()` | The native text input (UITextField or UITextView / EditText) | [Input](./input.md) |
 | `<OtpInput>` | `nsh_base::otp_input()` | A one-time code of a fixed number of digits, typed, pasted or autofilled into cells | [OtpInput](./otp-input.md) |
