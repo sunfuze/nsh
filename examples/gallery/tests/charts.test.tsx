@@ -4,8 +4,9 @@
 // and whose range changes, a drawdown whose day under the pointer or the
 // arrow keys is read out over both of its plots, capacity rings by period,
 // a donut of revenue that reports the slice under the pointer (none in its
-// hole) or the arrow keys and closes into a pie, and sales as bars side by
-// side or stacked.
+// hole) or the arrow keys and closes into a pie, sales as bars side by
+// side or stacked, and a watchlist whose sparklines come with their rows
+// as its list scrolls and show each period.
 import { beforeEach, expect, open, test } from "nsh/test";
 import type { App } from "nsh/test";
 
@@ -137,4 +138,17 @@ test("bars stand in bands side by side or stacked, a value over each", async () 
   await app.press("role:tab[Stacked]");
   await app.waitFor("96");
   expect(app.texts()).not.toContain("63");
+});
+
+test("the watchlist's sparklines come with their rows and show each period", async () => {
+  await app.waitFor("label:/^AAPL, 1D: /");
+  // Down to the last symbols and back: the list makes their rows, each
+  // with its sparkline, as they scroll in.
+  await app.scroll("id:watchlist", 52 * 13);
+  await app.waitFor("label:/^SHOP, 1D: /");
+  await app.scroll("id:watchlist", -52 * 13);
+  await app.waitFor("label:/^AAPL, 1D: /");
+  await app.press("role:tab[1W]");
+  await app.waitFor("label:/^AAPL, 1W: /");
+  expect(app.count("label:/^AAPL, 1D: /")).toBe(0);
 });

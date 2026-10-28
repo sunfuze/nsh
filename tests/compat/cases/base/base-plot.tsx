@@ -29,8 +29,11 @@
 // along a plot's edges.
 // A sparkline's y domain, the extent of its rows, moves to a new one with
 // `motion.update` as rows come.
+// A `PlotAppearScope` (`id`) remembers the appears that finished in it: a
+// plot made again there shows whole at once, a new `appearGeneration` (a
+// string) and a new `id` draw it in again.
 import { Text, View, signal } from "nsh";
-import { Arc, Area, Bar, Grid, Line, Pie, Plot, PlotAxis } from "nsh/base/plot";
+import { Arc, Area, Bar, Grid, Line, Pie, Plot, PlotAppearScope, PlotAxis } from "nsh/base/plot";
 
 type Row = { t: number; price: number; avg: number };
 type Sale = { v: number; w: number };
@@ -138,6 +141,7 @@ function App() {
       </Plot>
       <PieCase />
       <AxisCase />
+      <ScopeCase />
     </View>
   );
 }
@@ -200,6 +204,37 @@ function AxisCase() {
       <PlotAxis placement="left" tickValues={[0, 50, 100]} labelStyle={{ width: 20, height: 10 }} tickStyle={{ width: 4, height: 1 }} lineClass="w-px" />
       <PlotAxis placement="right" labelPlacement="inside" tickValues={[50]} format={(v) => `in${v}`} labelStyle={{ width: 30, height: 10 }} />
     </Plot>
+  );
+}
+
+/** A sparkline a row of a list would make again: shown and taken away,
+ * its period changed, and the scope's `id` changed, over an appear of
+ * 100 ms. */
+function ScopeCase() {
+  const shown = signal(false);
+  const period = signal("1D");
+  const list = signal("watch");
+  return (
+    <View>
+      <PlotAppearScope id={list()}>
+        <If when={shown()}>
+          <Plot
+            data={[{ v: 1 }, { v: 3 }, { v: 2 }]}
+            y="v"
+            interactive={false}
+            appearGeneration={`AAPL ${period()}`}
+            motion={{ appear: { duration: 100 } }}
+            style={{ width: 100, height: 20 }}
+          >
+            <Line testID="scoped-line" />
+          </Plot>
+        </If>
+      </PlotAppearScope>
+      <Text>{`scoped ${shown()} ${period()} ${list()}`}</Text>
+      <View testID="scope-toggle" onPress={() => shown.set(!shown())} style={{ height: 20 }} />
+      <View testID="scope-period" onPress={() => period.set("1W")} style={{ height: 20 }} />
+      <View testID="scope-rename" onPress={() => list.set("hot")} style={{ height: 20 }} />
+    </View>
   );
 }
 
